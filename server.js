@@ -9,12 +9,12 @@ app.use(express.json());
 // In-memory data storage for polls
 const polls = {};
 
-// Serve the static HTML frontend
+// Serve the static HTML frontend (configured for vote.html)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'vote.html'));
 });
 
-// GET all polls index[cite: 1]
+// GET all polls index
 app.get('/api/polls', (req, res) => {
   const list = Object.values(polls).map(p => ({
     id: p.id,
@@ -25,7 +25,7 @@ app.get('/api/polls', (req, res) => {
   res.json(list);
 });
 
-// GET a specific poll by ID[cite: 1]
+// GET a specific poll by ID
 app.get('/api/polls/:id', (req, res) => {
   const poll = polls[req.params.id];
   if (!poll) {
@@ -34,7 +34,7 @@ app.get('/api/polls/:id', (req, res) => {
   res.json(poll);
 });
 
-// POST create a new poll[cite: 1]
+// POST create a new poll
 app.post('/api/polls', (req, res) => {
   const { id, question, creator, options } = req.body;
 
@@ -56,7 +56,7 @@ app.post('/api/polls', (req, res) => {
   res.status(201).json(newPoll);
 });
 
-// POST submit a vote to a poll[cite: 1]
+// POST submit a vote to a poll
 app.post('/api/polls/:id/vote', (req, res) => {
   const { name, optionIndex } = req.body;
   const poll = polls[req.params.id];
