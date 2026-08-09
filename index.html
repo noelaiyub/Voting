@@ -3,406 +3,385 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ballot — quick polls</title>
+<title>Pitch Vote — live board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FAF8F3;
-    --paper-dim:#F1EEE5;
-    --ink:#211F1B;
-    --ink-soft:#8A8477;
-    --line:#DEDACC;
-    --stamp:#A8331F;
-    --stamp-soft:#A8331F1a;
+    --bg:#FFF7EC;
+    --ink:#2B2118;
+    --ink-soft:#8A7B6C;
+    --card-line:#2B2118;
+    --pink:#FF3E6C;
+    --yellow:#FFD166;
+    --coral:#FF7B54;
+    --mint:#3FC7A9;
+    --sky:#4FB8E8;
+    --lav:#A78BFA;
+    --gold:#FFC93C;
+    --cream-card:#FFFFFF;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--paper);
+    background:
+      radial-gradient(circle at 8% 12%, #FFE8D1 0%, transparent 40%),
+      radial-gradient(circle at 92% 85%, #D6F5EC 0%, transparent 45%),
+      var(--bg);
+    background-attachment:fixed;
     color:var(--ink);
-    font-family:'Inter',sans-serif;
+    font-family:'Poppins',sans-serif;
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:var(--stamp-soft);}
+  ::selection{background:#FFD166;}
 
   .wrap{
-    max-width:560px;
+    max-width:920px;
     margin:0 auto;
-    padding:64px 24px 96px;
+    padding:36px 20px 100px;
   }
 
-  .brand{
+  /* Header */
+  .header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:28px;
+  }
+  .title-block h1{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:800;
+    font-size:38px;
+    line-height:1;
+    margin:0 0 4px;
+    letter-spacing:-0.01em;
+  }
+  .title-block .sub{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .live-pill{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--ink);
+    color:#fff;
+    padding:8px 16px;
+    border-radius:999px;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    box-shadow:3px 3px 0 var(--pink);
+  }
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#4CFF6E;
+    animation:pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1; transform:scale(1);}
+    50%{opacity:0.4; transform:scale(0.7);}
+  }
+
+  /* Name gate */
+  .name-card{
+    background:var(--cream-card);
+    border:3px solid var(--ink);
+    border-radius:20px;
+    padding:22px 24px;
+    margin-bottom:28px;
+    box-shadow:5px 5px 0 var(--yellow);
+    transform:rotate(-0.4deg);
+  }
+  .name-card .lbl{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:10px;
+    display:block;
+  }
+  .name-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  input[type=text]{
+    font-family:'Poppins',sans-serif;
+    font-size:15px;
+    padding:11px 14px;
+    border:2.5px solid var(--ink);
+    border-radius:12px;
+    outline:none;
+    background:#fff;
+    color:var(--ink);
+    transition:box-shadow .15s ease;
+  }
+  input[type=text]:focus{box-shadow:0 0 0 3px #FFD16680;}
+  input[type=text]::placeholder{color:#B8AC9C;}
+  #nameInput{flex:1; min-width:180px;}
+
+  .btn{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    border:2.5px solid var(--ink);
+    border-radius:12px;
+    padding:11px 20px;
+    cursor:pointer;
+    transition:transform .1s ease, box-shadow .1s ease;
+    background:var(--yellow);
+    color:var(--ink);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .btn:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink);}
+  .btn:active{transform:translate(1px,1px); box-shadow:1px 1px 0 var(--ink);}
+  .btn:disabled{opacity:0.45; cursor:default; transform:none; box-shadow:3px 3px 0 var(--ink);}
+  .btn.pink{background:var(--pink); color:#fff;}
+  .btn.mint{background:var(--mint); color:#fff;}
+  .btn.small{padding:9px 16px; font-size:13px;}
+
+  .you-are{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:10px;
+  }
+  .you-are b{color:var(--ink);}
+  .change-name{
+    background:none;border:none;color:var(--pink);
+    font-weight:600;font-size:12.5px;cursor:pointer;
+    text-decoration:underline;padding:0;margin-left:4px;
+  }
+
+  /* Add pitcher */
+  .add-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:32px;
+  }
+  #pitcherInput{flex:1; min-width:200px;}
+
+  /* Board grid */
+  .board-heading{
     display:flex;
     align-items:baseline;
     justify-content:space-between;
-    margin-bottom:56px;
+    margin-bottom:16px;
   }
-  .brand-mark{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:22px;
-    letter-spacing:-0.01em;
-    cursor:pointer;
+  .board-heading h2{
+    font-family:'Baloo 2',sans-serif;
+    font-size:20px;
+    margin:0;
   }
-  .brand-mark span{color:var(--stamp);}
-  .brand-sub{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
+  .total-votes{
+    font-size:12.5px;
     color:var(--ink-soft);
-    letter-spacing:0.04em;
-  }
-
-  h1{
-    font-family:'Fraunces',serif;
     font-weight:500;
-    font-style:italic;
-    font-size:36px;
-    line-height:1.15;
-    letter-spacing:-0.01em;
-    margin:0 0 8px;
-  }
-  .lede{
-    color:var(--ink-soft);
-    font-size:15px;
-    line-height:1.5;
-    margin:0 0 40px;
-    max-width:44ch;
   }
 
-  label.field-label{
-    display:block;
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.06em;
-    color:var(--ink-soft);
-    margin-bottom:8px;
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:18px;
   }
 
-  input[type=text]{
-    width:100%;
-    background:transparent;
-    border:none;
-    border-bottom:1.5px solid var(--line);
-    padding:10px 2px;
-    font-family:'Inter',sans-serif;
-    font-size:16px;
-    color:var(--ink);
+  .card{
+    position:relative;
+    background:#fff;
+    border:3px solid var(--ink);
+    border-radius:18px;
+    padding:20px 18px 18px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    overflow:visible;
+  }
+  .card:hover{transform:translateY(-3px);}
+  .card:active{transform:translateY(-1px) scale(0.98);}
+
+  .card.rank-0{ transform:rotate(-1deg); }
+  .card.rank-1{ transform:rotate(0.8deg); }
+  .card.rank-2{ transform:rotate(-0.6deg); }
+  .card.rank-0:hover{ transform:rotate(-1deg) translateY(-3px); }
+  .card.rank-1:hover{ transform:rotate(0.8deg) translateY(-3px); }
+  .card.rank-2:hover{ transform:rotate(-0.6deg) translateY(-3px); }
+
+  .card.mine{
     outline:none;
-    transition:border-color .15s ease;
+    box-shadow:0 0 0 3px var(--ink), 6px 6px 0 var(--pink) !important;
   }
-  input[type=text]:focus{border-bottom-color:var(--ink);}
-  input[type=text]::placeholder{color:#B8B2A0;}
 
-  .field{margin-bottom:26px;}
+  .crown{
+    position:absolute;
+    top:-20px;
+    left:50%;
+    transform:translateX(-50%) rotate(-8deg);
+    font-size:26px;
+    filter:drop-shadow(0 2px 0 rgba(0,0,0,0.15));
+  }
+  .medal{
+    position:absolute;
+    top:-14px;
+    right:-8px;
+    font-size:20px;
+  }
 
-  .option-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
+  .pitcher-name{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin-bottom:12px;
+    word-break:break-word;
+    padding-right:4px;
+  }
+
+  .vote-count{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:800;
+    font-size:34px;
+    line-height:1;
+    margin-bottom:2px;
+  }
+  .vote-label{
+    font-size:11px;
+    color:var(--ink-soft);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
     margin-bottom:12px;
   }
-  .option-row input{flex:1;}
-  .option-num{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    color:var(--ink-soft);
-    width:16px;
-  }
-  .remove-opt{
-    background:none;
-    border:none;
-    color:var(--ink-soft);
-    font-size:18px;
-    cursor:pointer;
-    line-height:1;
-    padding:4px;
-    opacity:0.6;
-  }
-  .remove-opt:hover{opacity:1;color:var(--stamp);}
 
-  .add-opt{
-    background:none;
-    border:none;
-    color:var(--ink-soft);
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.03em;
-    cursor:pointer;
-    padding:6px 0;
-    margin-bottom:32px;
-    border-bottom:1px dashed transparent;
-  }
-  .add-opt:hover{color:var(--ink);border-bottom-color:var(--ink-soft);}
-
-  button.primary{
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    font-family:'Inter',sans-serif;
-    font-weight:600;
-    font-size:14px;
-    letter-spacing:0.01em;
-    padding:14px 26px;
-    cursor:pointer;
-    transition:transform .12s ease, background .15s ease;
-  }
-  button.primary:hover{background:#3a3730;}
-  button.primary:active{transform:scale(0.98);}
-  button.primary:disabled{opacity:0.4;cursor:default;}
-
-  button.ghost{
-    background:none;
-    border:1.5px solid var(--line);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    font-weight:500;
-    font-size:13px;
-    padding:10px 18px;
-    cursor:pointer;
-    transition:border-color .15s ease;
-  }
-  button.ghost:hover{border-color:var(--ink);}
-
-  .divider{
-    border:none;
-    border-top:1px solid var(--line);
-    margin:48px 0;
-  }
-
-  .recent-item{
-    display:block;
-    padding:16px 0;
-    border-bottom:1px solid var(--line);
-    text-decoration:none;
-    color:var(--ink);
-    cursor:pointer;
-  }
-  .recent-item:first-of-type{border-top:1px solid var(--line);}
-  .recent-q{
-    font-family:'Fraunces',serif;
-    font-size:17px;
-    margin-bottom:4px;
-  }
-  .recent-meta{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    color:var(--ink-soft);
-  }
-  .empty-note{
-    color:var(--ink-soft);
-    font-size:13px;
-    font-style:italic;
-    padding:20px 0;
-  }
-
-  /* Poll view */
-  .poll-question{
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    font-size:30px;
-    line-height:1.2;
-    letter-spacing:-0.01em;
-    margin:0 0 6px;
-  }
-  .poll-meta{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    color:var(--ink-soft);
-    margin-bottom:36px;
-  }
-
-  .ballot-line{
-    position:relative;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:16px 4px;
-    border-bottom:1px solid var(--line);
-    cursor:pointer;
-    transition:background .12s ease;
-  }
-  .ballot-line:hover{background:var(--paper-dim);}
-  .ballot-box{
-    width:20px;
-    height:20px;
-    border:1.5px solid var(--ink-soft);
-    flex-shrink:0;
-    position:relative;
-  }
-  .ballot-line.picked .ballot-box{border-color:var(--stamp);}
-  .ballot-box svg{
-    position:absolute;top:-3px;left:-2px;
-    opacity:0;
-    transition:opacity .1s ease;
-  }
-  .ballot-line.picked .ballot-box svg{opacity:1;}
-  .ballot-text{
-    font-size:16px;
-    flex:1;
-  }
-
-  .results-line{
-    padding:14px 4px 18px;
-    border-bottom:1px solid var(--line);
-    position:relative;
-  }
-  .results-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    margin-bottom:8px;
-  }
-  .results-text{
-    font-size:15.5px;
-    font-weight:500;
-  }
-  .results-text.mine::after{
-    content:'— your pick';
-    font-family:'JetBrains Mono',monospace;
-    font-weight:400;
-    font-size:10.5px;
-    color:var(--stamp);
-    margin-left:8px;
-    text-transform:uppercase;
-    letter-spacing:0.03em;
-  }
-  .results-pct{
-    font-family:'JetBrains Mono',monospace;
-    font-size:13px;
-    color:var(--ink-soft);
-  }
   .bar-track{
-    height:6px;
-    background:var(--paper-dim);
-    width:100%;
+    height:9px;
+    background:#F1ECE3;
+    border-radius:6px;
     overflow:hidden;
+    border:1.5px solid var(--ink);
+    margin-bottom:14px;
   }
   .bar-fill{
     height:100%;
-    background:var(--ink);
     width:0%;
+    border-radius:6px;
     transition:width .5s cubic-bezier(.2,.8,.2,1);
   }
-  .results-line.mine .bar-fill{background:var(--stamp);}
 
-  .vote-cta{
-    margin-top:8px;
-  }
-
-  .stamp-mark{
-    position:absolute;
-    right:0;
-    top:8px;
-    width:56px;
-    height:56px;
-    pointer-events:none;
-    opacity:0;
-    transform:rotate(-12deg) scale(0.6);
-    transition:opacity .3s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
-  }
-  .stamp-mark.show{
-    opacity:0.9;
-    transform:rotate(-12deg) scale(1);
-  }
-
-  .share-box{
-    display:flex;
-    gap:8px;
-    margin-top:28px;
-    align-items:center;
-  }
-  .share-box input{
-    flex:1;
-    background:var(--paper-dim);
-    border:1px solid var(--line);
-    padding:10px 12px;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-soft);
-  }
-
-  .totals{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11.5px;
-    color:var(--ink-soft);
-    margin-top:24px;
-  }
-
-  .back-link{
-    display:inline-block;
-    font-family:'JetBrains Mono',monospace;
-    font-size:11.5px;
-    color:var(--ink-soft);
-    text-decoration:none;
-    margin-bottom:32px;
+  .vote-btn{
+    width:100%;
+    text-align:center;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    border-radius:10px;
+    padding:9px;
+    border:2px solid var(--ink);
     cursor:pointer;
   }
-  .back-link:hover{color:var(--ink);}
+  .vote-btn.unvoted{background:var(--ink); color:#fff;}
+  .vote-btn.voted{background:#fff; color:var(--ink);}
+
+  .empty-board{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--ink-soft);
+    font-size:14px;
+  }
+  .empty-board .big{
+    font-size:38px;
+    margin-bottom:10px;
+  }
 
   .toast{
     position:fixed;
-    bottom:28px;
+    bottom:26px;
     left:50%;
-    transform:translateX(-50%) translateY(12px);
+    transform:translateX(-50%) translateY(14px);
     background:var(--ink);
-    color:var(--paper);
-    font-size:13px;
-    padding:10px 20px;
+    color:#fff;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    padding:11px 22px;
+    border-radius:999px;
     opacity:0;
     pointer-events:none;
     transition:opacity .2s ease, transform .2s ease;
+    z-index:50;
   }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  .confetti-piece{
+    position:absolute;
+    width:7px;height:7px;
+    border-radius:2px;
+    pointer-events:none;
+    animation:burst .7s ease-out forwards;
+  }
+  @keyframes burst{
+    0%{opacity:1; transform:translate(0,0) rotate(0deg);}
+    100%{opacity:0; transform:var(--end) rotate(360deg);}
+  }
 
   .loading{
     color:var(--ink-soft);
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
+    font-family:'Baloo 2',sans-serif;
+    font-size:14px;
+    padding:30px 0;
   }
 
   @media (max-width:480px){
-    .wrap{padding:40px 18px 80px;}
-    h1{font-size:28px;}
-    .poll-question{font-size:24px;}
+    .title-block h1{font-size:30px;}
+    .wrap{padding:26px 14px 90px;}
   }
 
   @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
+    *{animation:none !important; transition:none !important;}
   }
 </style>
 </head>
 <body>
-<div class="wrap" id="app">
-  <div class="brand">
-    <div class="brand-mark" onclick="goHome()">ballot<span>.</span></div>
-    <div class="brand-sub">open polls</div>
+<div class="wrap">
+  <div class="header">
+    <div class="title-block">
+      <h1>🎤 Pitch Vote</h1>
+      <div class="sub">Click a card to cast your vote — updates live for everyone</div>
+    </div>
+    <div class="live-pill"><span class="live-dot"></span>LIVE</div>
   </div>
-  <div id="content"><div class="loading">loading…</div></div>
+
+  <div id="nameGate"></div>
+  <div id="addPitcherWrap"></div>
+
+  <div class="board-heading">
+    <h2>The board</h2>
+    <div class="total-votes" id="totalVotes"></div>
+  </div>
+  <div id="board"><div class="loading">loading board…</div></div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-const content = document.getElementById('toast') ? document.getElementById('content') : null;
+const CARD_COLORS = ['#FFD166','#FF7B54','#4FB8E8','#A78BFA','#3FC7A9','#FF3E6C'];
 const toastEl = document.getElementById('toast');
-
-function showToast(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  setTimeout(()=>toastEl.classList.remove('show'), 1800);
-}
+let myName = '';
+let pollTimer = null;
 
 function esc(s){
   const d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
 }
-
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=>toastEl.classList.remove('show'), 1700);
+}
 function genId(){
-  return Math.random().toString(36).slice(2,8) + Math.random().toString(36).slice(2,5);
+  return Math.random().toString(36).slice(2,9);
 }
 
 async function getName(){
@@ -415,344 +394,208 @@ async function setName(name){
   try{ await window.storage.set('profile:name', name, false); }catch(e){}
 }
 
-async function getIndex(){
+async function getBoard(){
   try{
-    const r = await window.storage.get('polls:index', true);
-    return r ? JSON.parse(r.value) : [];
-  }catch(e){ return []; }
-}
-async function saveIndex(list){
-  try{ await window.storage.set('polls:index', JSON.stringify(list), true); }catch(e){}
-}
-
-async function getPoll(id){
-  try{
-    const r = await window.storage.get('poll:'+id, true);
+    const r = await window.storage.get('board:main', true);
     return r ? JSON.parse(r.value) : null;
   }catch(e){ return null; }
 }
-async function savePoll(id, data){
-  try{ await window.storage.set('poll:'+id, JSON.stringify(data), true); return true; }catch(e){ return false; }
+async function saveBoard(data){
+  try{ await window.storage.set('board:main', JSON.stringify(data), true); return true; }
+  catch(e){ return false; }
 }
-
-function goHome(){
-  location.hash = '';
-}
-function goPoll(id){
-  location.hash = 'poll=' + id;
-}
-
-window.addEventListener('hashchange', route);
-window.addEventListener('DOMContentLoaded', route);
-
-async function route(){
-  const hash = location.hash.replace('#','');
-  if(hash.startsWith('poll=')){
-    renderPoll(hash.slice(5));
-  } else {
-    renderHome();
+async function ensureBoard(){
+  let b = await getBoard();
+  if(!b){
+    b = { pitchers: [], voters: {}, createdAt: Date.now() };
+    await saveBoard(b);
   }
+  return b;
 }
 
-// ---------- HOME ----------
-async function renderHome(){
-  const content = document.getElementById('content');
-  content.innerHTML = '<div class="loading">loading…</div>';
-  const savedName = await getName();
-  const index = await getIndex();
-
-  content.innerHTML = `
-    <h1>Make a poll,<br>share the link.</h1>
-    <p class="lede">No login. Put your name, ask a question, give people the link — they vote, you watch the count move.</p>
-
-    <div class="field">
-      <label class="field-label">Your name</label>
-      <input type="text" id="creatorName" placeholder="e.g. Noel" value="${esc(savedName||'')}">
-    </div>
-
-    <div class="field">
-      <label class="field-label">Question</label>
-      <input type="text" id="question" placeholder="e.g. Which venue for the meetup?">
-    </div>
-
-    <div id="optionsWrap"></div>
-    <button class="add-opt" onclick="addOption()">+ add option</button>
-    <br>
-    <button class="primary" onclick="createPoll()">Create poll →</button>
-
-    <hr class="divider">
-
-    <label class="field-label">Recent polls</label>
-    <div id="recentList"></div>
-  `;
-
-  const optWrap = document.getElementById('optionsWrap');
-  optWrap.innerHTML = '';
-  addOptionRow('');
-  addOptionRow('');
-
-  const recentList = document.getElementById('recentList');
-  if(index.length === 0){
-    recentList.innerHTML = '<div class="empty-note">No polls yet — be the first to make one.</div>';
-  } else {
-    const sorted = [...index].sort((a,b)=> b.createdAt - a.createdAt).slice(0,12);
-    recentList.innerHTML = sorted.map(p => `
-      <a class="recent-item" onclick="goPoll('${p.id}')">
-        <div class="recent-q">${esc(p.question)}</div>
-        <div class="recent-meta">by ${esc(p.creator)} · ${timeAgo(p.createdAt)}</div>
-      </a>
-    `).join('');
-  }
+async function init(){
+  myName = await getName();
+  renderNameGate();
+  renderAddPitcher();
+  await refreshBoard();
+  pollTimer = setInterval(refreshBoard, 3500);
 }
+window.addEventListener('DOMContentLoaded', init);
 
-function addOptionRow(val){
-  const optWrap = document.getElementById('optionsWrap');
-  const row = document.createElement('div');
-  row.className = 'option-row';
-  const n = optWrap.children.length + 1;
-  row.innerHTML = `
-    <span class="option-num">${n}</span>
-    <input type="text" class="opt-input" placeholder="Option ${n}" value="${esc(val||'')}">
-    <button class="remove-opt" onclick="this.parentElement.remove(); renumber();" title="remove">×</button>
-  `;
-  optWrap.appendChild(row);
-}
-function addOption(){
-  const optWrap = document.getElementById('optionsWrap');
-  if(optWrap.children.length >= 10){ showToast('10 options is the cap'); return; }
-  addOptionRow('');
-}
-function renumber(){
-  const rows = document.querySelectorAll('#optionsWrap .option-row');
-  rows.forEach((r,i)=>{
-    r.querySelector('.option-num').textContent = i+1;
-    r.querySelector('input').placeholder = 'Option ' + (i+1);
-  });
-}
-
-async function createPoll(){
-  const nameEl = document.getElementById('creatorName');
-  const qEl = document.getElementById('question');
-  const name = nameEl.value.trim();
-  const question = qEl.value.trim();
-  const opts = [...document.querySelectorAll('.opt-input')]
-    .map(i => i.value.trim())
-    .filter(Boolean);
-
-  if(!name){ showToast('Add your name first'); nameEl.focus(); return; }
-  if(!question){ showToast('Add a question'); qEl.focus(); return; }
-  if(opts.length < 2){ showToast('Add at least 2 options'); return; }
-
-  const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Creating…';
-
-  await setName(name);
-
-  const id = genId();
-  const poll = {
-    id,
-    question,
-    creator: name,
-    options: opts,
-    votes: opts.map(()=>0),
-    voters: {},
-    createdAt: Date.now()
-  };
-  await savePoll(id, poll);
-
-  const index = await getIndex();
-  index.push({id, question, creator: name, createdAt: poll.createdAt});
-  await saveIndex(index);
-
-  goPoll(id);
-}
-
-function timeAgo(ts){
-  const s = Math.floor((Date.now()-ts)/1000);
-  if(s < 60) return 'just now';
-  if(s < 3600) return Math.floor(s/60)+'m ago';
-  if(s < 86400) return Math.floor(s/3600)+'h ago';
-  return Math.floor(s/86400)+'d ago';
-}
-
-// ---------- POLL VIEW ----------
-let currentPollId = null;
-let selectedOption = null;
-
-async function renderPoll(id){
-  currentPollId = id;
-  selectedOption = null;
-  const content = document.getElementById('content');
-  content.innerHTML = '<div class="loading">loading poll…</div>';
-
-  const poll = await getPoll(id);
-  if(!poll){
-    content.innerHTML = `
-      <a class="back-link" onclick="goHome()">← back</a>
-      <h1>Poll not found</h1>
-      <p class="lede">This link doesn't point to a poll that exists here anymore.</p>
-      <button class="primary" onclick="goHome()">Make your own</button>
+function renderNameGate(){
+  const gate = document.getElementById('nameGate');
+  if(myName){
+    gate.innerHTML = `
+      <div class="you-are">Voting as <b>${esc(myName)}</b><button class="change-name" onclick="clearName()">change</button></div>
     `;
+  } else {
+    gate.innerHTML = `
+      <div class="name-card">
+        <span class="lbl">👋 What's your name?</span>
+        <div class="name-row">
+          <input type="text" id="nameInput" placeholder="Enter your name to vote">
+          <button class="btn pink" onclick="confirmName()">I'm in</button>
+        </div>
+      </div>
+    `;
+  }
+}
+async function confirmName(){
+  const input = document.getElementById('nameInput');
+  const name = input.value.trim();
+  if(!name){ showToast('Type your name first'); input.focus(); return; }
+  myName = name;
+  await setName(name);
+  renderNameGate();
+  await refreshBoard();
+  showToast(`Welcome, ${name} 🎉`);
+}
+function clearName(){
+  myName = '';
+  renderNameGate();
+  refreshBoard();
+}
+
+function renderAddPitcher(){
+  const wrap = document.getElementById('addPitcherWrap');
+  wrap.innerHTML = `
+    <div class="add-row">
+      <input type="text" id="pitcherInput" placeholder="Add a new pitch / pitcher name…">
+      <button class="btn mint" onclick="addPitcher()">+ Add to board</button>
+    </div>
+  `;
+}
+async function addPitcher(){
+  const input = document.getElementById('pitcherInput');
+  const name = input.value.trim();
+  if(!name){ showToast('Enter a pitcher name'); input.focus(); return; }
+
+  const board = await ensureBoard();
+  const dup = board.pitchers.find(p => p.name.toLowerCase() === name.toLowerCase());
+  if(dup){ showToast('Already on the board'); return; }
+
+  board.pitchers.push({ id: genId(), name, votes: 0 });
+  const ok = await saveBoard(board);
+  if(ok){
+    input.value = '';
+    showToast(`${name} added to the board`);
+    await refreshBoard();
+  } else {
+    showToast('Could not add — try again');
+  }
+}
+
+let lastRenderKey = '';
+
+async function refreshBoard(){
+  const board = await getBoard();
+  const boardEl = document.getElementById('board');
+  const totalEl = document.getElementById('totalVotes');
+
+  if(!board || board.pitchers.length === 0){
+    boardEl.innerHTML = `
+      <div class="empty-board">
+        <div class="big">🎬</div>
+        No pitchers on the board yet.<br>Add the first one above.
+      </div>
+    `;
+    totalEl.textContent = '';
+    lastRenderKey = '';
     return;
   }
 
-  const savedName = await getName();
-  const myVoteName = savedName ? Object.keys(poll.voters).find(n => n.toLowerCase() === savedName.toLowerCase()) : null;
-  const hasVoted = !!myVoteName;
+  const totalVotes = board.pitchers.reduce((a,p)=>a+p.votes,0);
+  const maxVotes = Math.max(...board.pitchers.map(p=>p.votes), 1);
+  totalEl.textContent = totalVotes + ' vote' + (totalVotes===1?'':'s') + ' cast';
 
-  content.innerHTML = `
-    <a class="back-link" onclick="goHome()">← all polls</a>
-    <div class="poll-question">${esc(poll.question)}</div>
-    <div class="poll-meta">by ${esc(poll.creator)} · ${timeAgo(poll.createdAt)}</div>
-    <div id="pollBody"></div>
-  `;
+  const myVoteFor = myName ? board.voters[Object.keys(board.voters).find(n=>n.toLowerCase()===myName.toLowerCase())] : undefined;
 
-  const body = document.getElementById('pollBody');
+  const sorted = [...board.pitchers].sort((a,b)=> b.votes - a.votes);
 
-  if(hasVoted){
-    renderResults(body, poll, myVoteName);
-  } else {
-    renderVoteForm(body, poll, savedName);
-  }
+  const renderKey = JSON.stringify(sorted.map(p=>[p.id,p.votes])) + '|' + myName;
+  if(renderKey === lastRenderKey) return; // avoid disrupting hover state on no-op polls
+  lastRenderKey = renderKey;
 
-  renderShare(id, poll);
-}
+  boardEl.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'grid';
 
-function renderVoteForm(body, poll, savedName){
-  body.innerHTML = `
-    <div class="field" style="margin-top:8px;">
-      <label class="field-label">Your name</label>
-      <input type="text" id="voterName" placeholder="e.g. Priya" value="${esc(savedName||'')}">
-    </div>
-    <div id="ballotOptions"></div>
-    <div class="vote-cta">
-      <button class="primary" id="submitVote" disabled onclick="submitVote()">Cast vote</button>
-    </div>
-    <div class="totals">${poll.votes.reduce((a,b)=>a+b,0)} vote(s) so far</div>
-  `;
-  const ballotWrap = document.getElementById('ballotOptions');
-  poll.options.forEach((opt, i) => {
-    const line = document.createElement('div');
-    line.className = 'ballot-line';
-    line.onclick = () => pickOption(i);
-    line.innerHTML = `
-      <div class="ballot-box" id="box-${i}">
-        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12l5 5L19 7" stroke="#A8331F" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="ballot-text">${esc(opt)}</div>
+  sorted.forEach((p, i) => {
+    const pct = Math.round((p.votes / maxVotes) * 100);
+    const isMine = p.id === myVoteFor;
+    const color = CARD_COLORS[i % CARD_COLORS.length];
+    const card = document.createElement('div');
+    card.className = `card rank-${i % 3}` + (isMine ? ' mine' : '');
+    card.onclick = (ev) => castVote(p.id, ev);
+    card.innerHTML = `
+      ${i===0 && p.votes>0 ? '<div class="crown">👑</div>' : ''}
+      ${i===1 && p.votes>0 ? '<div class="medal">🥈</div>' : ''}
+      ${i===2 && p.votes>0 ? '<div class="medal">🥉</div>' : ''}
+      <div class="pitcher-name">${esc(p.name)}</div>
+      <div class="vote-count">${p.votes}</div>
+      <div class="vote-label">vote${p.votes===1?'':'s'}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${color};"></div></div>
+      <div class="vote-btn ${isMine?'voted':'unvoted'}">${isMine ? '✓ Your vote' : 'Vote'}</div>
     `;
-    ballotWrap.appendChild(line);
+    grid.appendChild(card);
   });
+
+  boardEl.appendChild(grid);
 }
 
-function pickOption(i){
-  selectedOption = i;
-  document.querySelectorAll('.ballot-line').forEach((el, idx) => {
-    el.classList.toggle('picked', idx === i);
-  });
-  document.getElementById('submitVote').disabled = false;
-}
-
-async function submitVote(){
-  const nameEl = document.getElementById('voterName');
-  const name = nameEl.value.trim();
-  if(!name){ showToast('Add your name to vote'); nameEl.focus(); return; }
-  if(selectedOption === null){ showToast('Pick an option first'); return; }
-
-  const btn = document.getElementById('submitVote');
-  btn.disabled = true;
-  btn.textContent = 'Casting…';
-
-  await setName(name);
-
-  // Re-fetch latest to avoid clobbering concurrent votes
-  const poll = await getPoll(currentPollId);
-  if(!poll){ showToast('Poll disappeared'); return; }
-
-  const existing = Object.keys(poll.voters).find(n => n.toLowerCase() === name.toLowerCase());
-  if(existing){
-    showToast('This name already voted here');
-    renderPoll(currentPollId);
+async function castVote(pitcherId, ev){
+  if(!myName){
+    showToast('Enter your name first ☝️');
+    document.getElementById('nameInput')?.focus();
     return;
   }
 
-  poll.votes[selectedOption] = (poll.votes[selectedOption]||0) + 1;
-  poll.voters[name] = selectedOption;
-  const ok = await savePoll(currentPollId, poll);
+  const board = await getBoard();
+  if(!board) return;
 
-  if(!ok){ showToast('Could not save your vote — try again'); btn.disabled=false; btn.textContent='Cast vote'; return; }
+  const existingNameKey = Object.keys(board.voters).find(n => n.toLowerCase() === myName.toLowerCase());
+  const prevPitcherId = existingNameKey ? board.voters[existingNameKey] : null;
 
-  const body = document.getElementById('pollBody');
-  renderResults(body, poll, name, true);
-}
-
-function renderResults(body, poll, myName, justVoted){
-  const total = poll.votes.reduce((a,b)=>a+b,0) || 1;
-  body.innerHTML = `
-    <div id="resultsWrap" style="margin-top:8px;"></div>
-    <div class="totals">${poll.votes.reduce((a,b)=>a+b,0)} vote(s) total</div>
-  `;
-  const wrap = document.getElementById('resultsWrap');
-  const myIdx = poll.voters[myName];
-
-  poll.options.forEach((opt, i) => {
-    const pct = Math.round((poll.votes[i]/total)*100);
-    const isMine = i === myIdx;
-    const line = document.createElement('div');
-    line.className = 'results-line' + (isMine ? ' mine' : '');
-    line.innerHTML = `
-      ${isMine && justVoted ? stampSVG() : ''}
-      <div class="results-top">
-        <div class="results-text${isMine ? ' mine' : ''}">${esc(opt)}</div>
-        <div class="results-pct">${pct}% · ${poll.votes[i]}</div>
-      </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
-    `;
-    wrap.appendChild(line);
-  });
-
-  if(justVoted){
-    setTimeout(()=>{
-      const stamps = wrap.querySelectorAll('.stamp-mark');
-      stamps.forEach(s => s.classList.add('show'));
-    }, 60);
+  if(prevPitcherId === pitcherId){
+    showToast('Already your pick');
+    return;
   }
+
+  if(prevPitcherId){
+    const prev = board.pitchers.find(p => p.id === prevPitcherId);
+    if(prev) prev.votes = Math.max(0, prev.votes - 1);
+  }
+  const target = board.pitchers.find(p => p.id === pitcherId);
+  if(!target) return;
+  target.votes += 1;
+  board.voters[myName] = pitcherId;
+
+  const ok = await saveBoard(board);
+  if(!ok){ showToast('Vote failed — try again'); return; }
+
+  burstConfetti(ev.currentTarget);
+  lastRenderKey = '';
+  await refreshBoard();
+  showToast(`Voted for ${target.name} 🎉`);
 }
 
-function stampSVG(){
-  return `<svg class="stamp-mark" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="42" fill="none" stroke="#A8331F" stroke-width="4"/>
-    <text x="50" y="46" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#A8331F">VOTED</text>
-    <text x="50" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#A8331F">✓</text>
-  </svg>`;
-}
-
-function renderShare(id, poll){
-  const content = document.getElementById('content');
-  const url = location.origin + location.pathname + '#poll=' + id;
-  const shareDiv = document.createElement('div');
-  shareDiv.className = 'share-box';
-  shareDiv.innerHTML = `
-    <input type="text" readonly value="${esc(url)}" id="shareUrl" onclick="this.select()">
-    <button class="ghost" onclick="copyShare()">Copy link</button>
-  `;
-  content.appendChild(shareDiv);
-}
-
-async function copyShare(){
-  const input = document.getElementById('shareUrl');
-  input.select();
-  try{
-    await navigator.clipboard.writeText(input.value);
-    showToast('Link copied');
-  }catch(e){
-    try{
-      document.execCommand('copy');
-      showToast('Link copied');
-    }catch(e2){
-      showToast('Select the link and copy manually');
-    }
+function burstConfetti(cardEl){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const rect = cardEl.getBoundingClientRect();
+  const colors = ['#FF3E6C','#FFD166','#4FB8E8','#3FC7A9','#A78BFA'];
+  for(let i=0;i<14;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const angle = Math.random()*Math.PI*2;
+    const dist = 40 + Math.random()*50;
+    const ex = Math.cos(angle)*dist;
+    const ey = Math.sin(angle)*dist - 20;
+    p.style.setProperty('--end', `translate(${ex}px, ${ey}px)`);
+    p.style.background = colors[i % colors.length];
+    p.style.left = (rect.left + rect.width/2 + window.scrollX) + 'px';
+    p.style.top = (rect.top + rect.height/2 + window.scrollY) + 'px';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 750);
   }
 }
 </script>
